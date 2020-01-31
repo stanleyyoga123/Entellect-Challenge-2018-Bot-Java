@@ -48,7 +48,12 @@ public class Bot {
                 }
             }
         }
-
+        else{
+            int index = this.findMaximumAttack();
+            if(canAffordBuilding(BuildingType.ATTACK)){
+                command = placeBuildingInRowFromFront(BuildingType.ATTACK, index);
+            }
+        }
         return command;
     }
 
@@ -84,6 +89,31 @@ public class Bot {
             }
         }
         return "";
+    }
+
+    private int findMaximumAttack(){
+        int max;
+        int val = 0;
+
+        do{
+            max = counterBuilding.building[0][val].a;
+            val++;
+        }while (max >= 7 && val < gameState.gameDetails.mapHeight);
+
+        if(max >= 7){
+            return 99;
+        }
+
+        else{
+            for(int i = val; i < gameState.gameDetails.mapHeight; i++){
+                if(counterBuilding.building[0][i].a > max && counterBuilding.building[0][i].a < 6){
+                    val = i;
+                    max = counterBuilding.building[0][i].a;
+                }
+            }
+            val--;
+            return val;
+        }
     }
 
     /**
