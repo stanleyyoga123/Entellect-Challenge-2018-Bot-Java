@@ -3,7 +3,6 @@ package za.co.entelect.challenge;
 import za.co.entelect.challenge.entities.Building;
 import za.co.entelect.challenge.entities.CellStateContainer;
 import za.co.entelect.challenge.entities.GameState;
-//import za.co.entelect.challenge.entities.TestClass;
 import za.co.entelect.challenge.entities.BuildingsOnMap;
 import za.co.entelect.challenge.enums.BuildingType;
 import za.co.entelect.challenge.enums.PlayerType;
@@ -13,6 +12,11 @@ import java.util.Optional;
 import java.util.Random;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 
 public class Bot {
 
@@ -48,9 +52,28 @@ public class Bot {
                 }
             }
         }
+
         else{
             int index = this.findMaximumAttack();
-            if(canAffordBuilding(BuildingType.ATTACK)){
+
+            if(isCellEmpty(gameState.gameDetails.mapWidth/2-1,index)
+                    && canAffordBuilding(BuildingType.DEFENSE)
+                    && counterBuilding.building[0][index].a > 4){
+                command = placeBuildingFront(BuildingType.DEFENSE, index);
+            }
+
+            if(findMaxAttackEnemy() != -999 && canAffordBuilding(BuildingType.DEFENSE)){
+                if(isCellEmpty(gameState.gameDetails.mapWidth/2-1, findMaxAttackEnemy())){
+                    command = placeBuildingFront(BuildingType.DEFENSE, findMaxAttackEnemy());
+                }
+            }
+
+            if(canAffordBuilding(BuildingType.ATTACK) && command == ""){
+                command = placeBuildingInRowFromFront(BuildingType.ATTACK, index);
+            }
+
+            while(command == "" && canAffordBuilding(BuildingType.ATTACK)){
+                index++;
                 command = placeBuildingInRowFromFront(BuildingType.ATTACK, index);
             }
         }
@@ -94,13 +117,12 @@ public class Bot {
     private int findMaximumAttack(){
         int max;
         int val = 0;
-
         do{
             max = counterBuilding.building[0][val].a;
             val++;
-        }while (max >= 7 && val < gameState.gameDetails.mapHeight);
+        }while (max >= 6 && val < gameState.gameDetails.mapHeight);
 
-        if(max >= 7){
+        if(max >= 6){
             return 99;
         }
 
@@ -116,6 +138,9 @@ public class Bot {
         }
     }
 
+    private String placeBuildingFront(BuildingType buildingType, int y){
+        return buildCommand((gameState.gameDetails.mapWidth/2) - 1, y, buildingType);
+    }
     /**
      * Place building in row y nearest to the front
      *
@@ -123,8 +148,9 @@ public class Bot {
      * @param y            the y
      * @return the result
      **/
+
     private String placeBuildingInRowFromFront(BuildingType buildingType, int y) {
-        for (int i = (gameState.gameDetails.mapWidth / 2) - 1; i >= 0; i--) {
+        for (int i = (gameState.gameDetails.mapWidth / 2) - 2; i >= 0; i--) {
             if (isCellEmpty(i, y)) {
                 return buildCommand(i, y, buildingType);
             }
@@ -146,6 +172,18 @@ public class Bot {
             }
         }
         return "";
+    }
+
+    private int findMaxAttackEnemy(){
+        int answer = -999;
+        int max = 0;
+        for(int i = 0; i < gameState.gameDetails.mapHeight; i++){
+            if(counterBuilding.building[1][i].a > max){
+                answer = i;
+                max = counterBuilding.building[1][i].a;
+            }
+        }
+        return answer;
     }
 
     /**
