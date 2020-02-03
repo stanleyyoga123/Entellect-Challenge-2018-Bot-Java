@@ -41,8 +41,27 @@ public class Bot {
      **/
     public String run() {
         String command = "";
+        if(canAffordBuilding(BuildingType.ATTACK) || (canAffordBuilding(BuildingType.DEFENSE))){
+            int index = this.findMaximumAttack();
+            if(findMaxAttackEnemy() != -999 && canAffordBuilding(BuildingType.DEFENSE)){
+                if(isCellEmpty(gameState.gameDetails.mapWidth/2-1, findMaxAttackEnemy())){
+                    command = placeBuildingFront(BuildingType.DEFENSE, findMaxAttackEnemy());
+                }
+            }
+            if(isCellEmpty(gameState.gameDetails.mapWidth/2-1,index)
+                    && canAffordBuilding(BuildingType.DEFENSE)
+                    && counterBuilding.building[0][index].a > 4){
+                command = placeBuildingFront(BuildingType.DEFENSE, index);
+            }
+            if(canAffordBuilding(BuildingType.ATTACK) && command == ""){
+                command = placeBuildingInRowFromFront(BuildingType.ATTACK, index);
+            }
 
-        if(gameState.gameDetails.round < 13){
+            while(command == "" && canAffordBuilding(BuildingType.ATTACK)){
+                index++;
+                command = placeBuildingInRowFromFront(BuildingType.ATTACK, index);
+            }
+        }else{
             for(int i = 0; i < gameState.gameDetails.mapHeight; i++){
                 if(counterBuilding.building[0][i].e == 0 && counterBuilding.building[1][i].a == 0){
                     if(canAffordBuilding(BuildingType.ENERGY)){
@@ -52,31 +71,7 @@ public class Bot {
                 }
             }
         }
-
-        else{
-            int index = this.findMaximumAttack();
-
-            if(isCellEmpty(gameState.gameDetails.mapWidth/2-1,index)
-                    && canAffordBuilding(BuildingType.DEFENSE)
-                    && counterBuilding.building[0][index].a > 4){
-                command = placeBuildingFront(BuildingType.DEFENSE, index);
-            }
-
-            if(findMaxAttackEnemy() != -999 && canAffordBuilding(BuildingType.DEFENSE)){
-                if(isCellEmpty(gameState.gameDetails.mapWidth/2-1, findMaxAttackEnemy())){
-                    command = placeBuildingFront(BuildingType.DEFENSE, findMaxAttackEnemy());
-                }
-            }
-
-            if(canAffordBuilding(BuildingType.ATTACK) && command == ""){
-                command = placeBuildingInRowFromFront(BuildingType.ATTACK, index);
-            }
-
-            while(command == "" && canAffordBuilding(BuildingType.ATTACK)){
-                index++;
-                command = placeBuildingInRowFromFront(BuildingType.ATTACK, index);
-            }
-        }
+        
         return command;
     }
 
