@@ -3,7 +3,7 @@ package za.co.entelect.challenge;
 import com.google.gson.Gson;
 import za.co.entelect.challenge.entities.GameState;
 
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
@@ -13,7 +13,6 @@ public class Main {
 
     /**
      * Read the current state, feed it to the bot, get the output and write it to the command.
-     *
      * @param args the args
      **/
     public static void main(String[] args) {
@@ -29,12 +28,12 @@ public class Main {
 
         Bot bot = new Bot(gameState);
         String command = bot.run();
+
         writeBotResponseToFile(command);
     }
 
     /**
      * Write bot response to file
-     *
      * @param command the command
      **/
     private static void writeBotResponseToFile(String command) {

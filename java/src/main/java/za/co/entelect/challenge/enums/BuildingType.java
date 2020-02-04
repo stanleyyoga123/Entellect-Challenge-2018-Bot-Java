@@ -1,17 +1,22 @@
 package za.co.entelect.challenge.enums;
 
 public enum BuildingType {
-    DEFENSE("0"),
-    ATTACK("1"),
-    ENERGY("2");
+    DEFENSE(0),
+    ATTACK(1),
+    ENERGY(2);
 
-    private final String commandCode;
+    private int type;
 
-    BuildingType(String commandCode) {
-        this.commandCode = commandCode;
+    BuildingType(int type) {
+
+        this.type = type;
     }
 
-    public String getCommandCode() {
-        return commandCode;
+    public int getType() {
+        return type;
+    }
+
+    public String buildCommand(int x, int y) {
+        return String.format("%d,%d,%d", x, y, getType());
     }
 }

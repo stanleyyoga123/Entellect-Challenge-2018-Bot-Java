@@ -20,7 +20,12 @@ public class CellStateContainer {
         this.missiles = new ArrayList<>();
     }
 
-    public List<Building> getBuildings(){
+    public List<Building> getBuildings() {
         return this.buildings;
     }
+
+    public List<Missile> getMissiles() {
+        return this.missiles;
+    }
+
 }

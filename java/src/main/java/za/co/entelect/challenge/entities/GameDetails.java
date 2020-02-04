@@ -5,7 +5,6 @@ import za.co.entelect.challenge.enums.BuildingType;
 import java.util.HashMap;
 
 public class GameDetails {
-
     public int round;
     public int mapWidth;
     public int mapHeight;
@@ -13,4 +12,3 @@ public class GameDetails {
     public HashMap<BuildingType, BuildingStats> buildingsStats = new HashMap<>();
 
 }
-

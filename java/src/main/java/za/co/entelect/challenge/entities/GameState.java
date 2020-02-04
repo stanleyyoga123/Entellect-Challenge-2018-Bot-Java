@@ -5,9 +5,10 @@ import java.util.Arrays;
 import java.util.List;
 
 public class GameState {
-    public GameDetails gameDetails;
     protected Player[] players;
     protected CellStateContainer[][] gameMap;
+    protected GameDetails gameDetails;
+    protected Cell[] teslaHitList;
 
     public List<Player> getPlayers() {
         return new ArrayList<>(Arrays.asList(players));
@@ -21,5 +22,9 @@ public class GameState {
         }
 
         return list;
+    }
+
+    public GameDetails getGameDetails() {
+        return gameDetails;
     }
 }
