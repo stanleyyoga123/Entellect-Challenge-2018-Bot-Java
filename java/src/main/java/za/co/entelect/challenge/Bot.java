@@ -54,9 +54,15 @@ public class Bot {
         }else{
 
             for(int i = 0; i < gameState.gameDetails.mapHeight; i++){
+                if(counterBuilding.building[1][i].a>3 && counterBuilding.building[0][i].d<2){
+                    if(canAffordBuilding(BuildingType.DEFENSE)){
+                        command = placeBuildingInRowFromFront(BuildingType.DEFENSE, i);
+                    }
+                    break;
+                }
                 if(counterBuilding.building[1][i].d == 0){
                     if(canAffordBuilding(BuildingType.ATTACK)){
-                        command = placeBuildingInRowFromBack(BuildingType.ATTACK, i);
+                        command = placeBuildingInRowFromFront(BuildingType.ATTACK, i);
                     }
                     break;
                 }
