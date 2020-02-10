@@ -1,0 +1,8 @@
+{
+	"author": "San Ge Nan Ren",
+	"email": "john.doe@example.com",
+	"nickName": "San Ge Nan Ren",
+	"botLocation": "/target",
+	"botFileName": "java-sample-bot-jar-with-dependencies.jar",
+	"botLanguage": "java"
+}
