@@ -19,20 +19,20 @@ import java.nio.file.Paths;
 
 
 public class Bot {
-
+    // fields..............................
     private GameState gameState;
     private BuildingsOnMap counterBuilding;
 
-    
+    // Constructor.........................
     public Bot(GameState gameState) {
         this.gameState = gameState;
         gameState.getGameMap();
         this.counterBuilding = new BuildingsOnMap(gameState, PlayerType.A);
     }
-
+    // main bot............................
     public String run() {
         String command = "";
-
+        // jika energi cukup maka membangun bangunan defense
         if(canAffordBuilding(BuildingType.DEFENSE)){
             for(int i = 0; i <gameState.gameDetails.mapHeight; i++){
                 if(counterBuilding.building[1][i].a>3 && counterBuilding.building[0][i].d<1){
@@ -41,7 +41,8 @@ public class Bot {
                 break;
             }
         }
-
+        
+        // jika energi cukup maka membangun bangunan attack
         if(canAffordBuilding(BuildingType.ATTACK) && command == ""){
             for (int i=0;i<gameState.gameDetails.mapHeight;i++){
                 if(counterBuilding.building[1][i].d == 0){
@@ -52,7 +53,8 @@ public class Bot {
                 }
             }
         }
-
+        
+        // jika energi cukup maka membangun bangunan attack
         if(canAffordBuilding(BuildingType.ATTACK) && command == ""){
             for(int i = 0; i < gameState.gameDetails.mapHeight;i++){
                 if(counterBuilding.building[0][i].a + counterBuilding.building[0][i].d + counterBuilding.building[0][i].e < 8){
@@ -61,7 +63,8 @@ public class Bot {
                 }
             }
         }
-
+        
+        // jika energi cukup maka membangun bangunan yang menghasilkan energi
         if(canAffordBuilding(BuildingType.ENERGY) && command == ""){
             for(int i = 0; i < gameState.gameDetails.mapHeight; i++){
                 if(counterBuilding.building[0][i].e == 0 && counterBuilding.building[1][i].a == 0){
@@ -73,7 +76,7 @@ public class Bot {
 
         return command;
     }
-
+    // 
     private int findOnlyEnergyEnemy(){
         int val = 0;
         for(int i = 0; i < gameState.gameDetails.mapHeight; i++){

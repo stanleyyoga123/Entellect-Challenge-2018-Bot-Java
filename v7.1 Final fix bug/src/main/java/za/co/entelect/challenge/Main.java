@@ -16,6 +16,8 @@ public class Main {
      *
      * @param args the args
      **/
+    // main program
+    // membaca state sekarang memberi
     public static void main(String[] args) {
         String state = null;
         try {
