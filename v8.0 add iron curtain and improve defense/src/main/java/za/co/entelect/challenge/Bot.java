@@ -104,7 +104,7 @@ public class Bot {
     // fungsi untuk menempatkan bangunan bertipe buildingType di belakang garis y
     private String placeBuildingInRowFromBack(BuildingType buildingType, int y) {
         for (int i = 0; i < gameState.gameDetails.mapWidth / 2; i++) {
-            // cek sel kosong            
+            // cek sel kosong
             if (isCellEmpty(i, y)) {
                 return buildCommand(i, y, buildingType);
             }
